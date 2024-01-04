@@ -394,11 +394,6 @@ class AdaptiveBandit(AdaptiveBase):
     def count_ucb(self, q_value, exploration, step, n_value):
         return q_value + (exploration * np.sqrt((np.log(step) / (n_value + 1))))
 
-    def count_pucb(self, q_value, exploration, predictor, step, n_value):
-        return q_value + (
-            exploration * predictor * np.sqrt((np.log(step) / (n_value + 1)))
-        )
-
     def getRewards(self, trajidx, data_q, confstatdist, numstates, rewardmethod):
         from htmd.kinetics import Kinetics
         import pandas as pd
