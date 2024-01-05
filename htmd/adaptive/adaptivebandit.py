@@ -302,7 +302,7 @@ class AdaptiveBandit(AdaptiveBase):
                 traj.cluster = self._model.macro_ofcluster[traj.cluster]
             data_q.K = self._model.macronum
 
-        if self.recluster:
+        if self.recluster and self.actionspace != "ticapcca":
             print(f"Reclustering with {self.reclusterMethod}")
             data_q.cluster(
                 self.reclusterMethod(n_clusters=self._numClusters(data.numFrames))
