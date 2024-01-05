@@ -151,6 +151,14 @@ class AdaptiveBandit(AdaptiveBase):
             val.Number(int, "POS"),
         )
         self._arg(
+            "statetype",
+            "str",
+            "What states (cluster, micro, macro) to use for calculations.",
+            "micro",
+            val.String(),
+            valid_values=("micro", "cluster", "macro"),
+        )
+        self._arg(
             "lag",
             "int",
             "The lagtime used to create the Markov model. Units are in frames.",
