@@ -375,15 +375,20 @@ class AdaptiveBandit(AdaptiveBase):
 
         N = self.nmax - self._running
 
-        action = np.argsort(-ucb_values)[:N]
-        action_sel = np.zeros(numstates, dtype=int)
-        action_sel[action] += 1
+        if self.actionspace == 'ticapcca':
+            action = np.argmax(-ucb_values)
+            action_sel = np.zeros(numstates, dtype=int)
+            action_sel[action] += N
+        else:
+            action = np.argsort(-ucb_values)[:N]
+            action_sel = np.zeros(numstates, dtype=int)
+            action_sel[action] += 1
 
-        while np.sum(action_sel) < N:  # When K is lower than N repeat some actions
-            for a in action:
-                action_sel[a] += 1
-                if np.sum(action_sel) == N:
-                    break
+            while np.sum(action_sel) < N:  # When K is lower than N repeat some actions
+                for a in action:
+                    action_sel[a] += 1
+                    if np.sum(action_sel) == N:
+                        break
 
         if self.save_qval:
             np.save(path.join("saveddata", f"e{currepoch}_actions.npy"), action_sel)
