@@ -376,7 +376,7 @@ class AdaptiveBandit(AdaptiveBase):
         N = self.nmax - self._running
 
         if self.actionspace == 'ticapcca':
-            action = np.argmax(-ucb_values)
+            action = np.argmax(ucb_values)
             action_sel = np.zeros(numstates, dtype=int)
             action_sel[action] += N
         else:
