@@ -9,7 +9,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        os: [
+            "ubuntu-latest",
+            # "macos-latest",
+            "macos-latest-large",
+            "windows-latest",
+          ]
         python-version: ["3.8", "3.9", "3.10"]
 
     defaults: # Needed for conda
@@ -37,6 +42,11 @@ jobs:
 
       - name: Install MacOS HTMD conda deps
         if: matrix.os == 'macos-latest'
+        run: |
+          mamba install --file package/htmd/DEPENDENCIES_MAC python=${{ matrix.python-version }} -y
+
+      - name: Install MacOS HTMD conda deps
+        if: matrix.os == 'macos-latest-large'
         run: |
           mamba install --file package/htmd/DEPENDENCIES_MAC python=${{ matrix.python-version }} -y
 
@@ -73,7 +83,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        os:
+          [
+            "ubuntu-latest",
+            "macos-latest",
+            "macos-latest-large",
+            "windows-latest",
+          ]
         python-version: ["3.8", "3.9", "3.10"]
 
     steps:
@@ -96,6 +112,12 @@ jobs:
 
       - name: Dump MacOS dependencies yaml file
         if: matrix.os == 'macos-latest'
+        run: |
+          pip install versioneer==0.28
+          python package/htmd/insert_placeholder_values.py package/htmd/DEPENDENCIES_MAC
+
+      - name: Dump MacOS dependencies yaml file
+        if: matrix.os == 'macos-latest-large'
         run: |
           pip install versioneer==0.28
           python package/htmd/insert_placeholder_values.py package/htmd/DEPENDENCIES_MAC
